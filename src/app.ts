@@ -54,7 +54,7 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
   bot.sendMessage(chatId, formattedResponse);
 });
 
-bot.onText(/^((?!\/fights|\/fightsCard\/[0-9]).)*$/gm, (msg) => {
+bot.onText(/^((?!\/fights|\/fightCard\/[0-9]).)*$/gm, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, 'Use the commands /fights or /fightCard/(FightId)');
 });
