@@ -12,17 +12,16 @@ const PORT = process.env.PORT || 3001;
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 
 bot.onText(/^\/fights$/gm, async (msg) => {
   const chatId = msg.chat.id;
   let formattedResponse = '';
   formattedResponse += 'Next Events: \n';
 
-  try {    
+  try {
     await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/fights')
-      .then(({ data }) => data.forEach((fight: typeof data, index: number) => {        
-        // formattedResponse += '\n';
+      .then(({ data }) => data.forEach((fight: typeof data, index: number) => {
         const { title, date, time, fightNight, url } = fight;
         const dateObj = new Date(date);
         const formattedLine = `\n FightId: ${index + 1} | MainFight: ${title} | Date: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} | Time: ${time} | EventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} | EventLink: ${url} \n`;
@@ -41,7 +40,7 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
   let formattedResponse = '';
   let fightById = [];
 
-  try {    
+  try {
     fightById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${Number(fightId) - 1}`).then(({ data }) => data)).card;
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
@@ -54,7 +53,7 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
   bot.sendMessage(chatId, formattedResponse);
 });
 
-bot.onText(/^((?!\/fights|\/fightCard\/[0-9]).)*$/gm, (msg) => {
+bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, 'Use the commands /fights or /fightCard/(FightId)');
 });
