@@ -24,7 +24,7 @@ bot.onText(/^\/events$/gm, async (msg) => {
       .then(({ data }) => data
         .forEach(({ _id, title, date, time, fightNight, url }: typeof data) => {
           const dateObj = new Date(date);
-          const formattedLine = `\n EventId: ${_id} \n MainFight: ${title} \n Date: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \n Time: ${time} \n EventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \n EventLink: ${url} \n`;
+          const formattedLine = `\nEventId: ${_id} \nMainFight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEventLink: ${url} \n`;
           formattedResponse += formattedLine;
         }));
   } catch (err) {
@@ -34,7 +34,7 @@ bot.onText(/^\/events$/gm, async (msg) => {
   bot.sendMessage(chatId, formattedResponse);
 });
 
-bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
+bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('/')[2];
   const chatId = msg.chat.id;
   let formattedResponse = '';
@@ -56,7 +56,7 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
 
 bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Use the commands /events or /fightCard/(EventId) (Example: /fightCard/1)');
+  bot.sendMessage(chatId, 'Use the commands /events or /eventFights/(EventId) \nExample: /eventFights/1');
 });
 
 api.listen(PORT, async () => {
