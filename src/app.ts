@@ -14,19 +14,19 @@ const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 
-bot.onText(/^\/fights$/gm, async (msg) => {
+bot.onText(/^\/events$/gm, async (msg) => {
   const chatId = msg.chat.id;
   let formattedResponse = '';
   formattedResponse += 'Next Events: \n';
 
   try {
-    await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/fights')
-      .then(({ data }) => data.forEach((fight: typeof data, index: number) => {
-        const { title, date, time, fightNight, url } = fight;
-        const dateObj = new Date(date);
-        const formattedLine = `\n FightId: ${index + 1} | MainFight: ${title} | Date: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} | Time: ${time} | EventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} | EventLink: ${url} \n`;
-        formattedResponse += formattedLine;
-      }));
+    await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
+      .then(({ data }) => data
+        .forEach(({ _id, title, date, time, fightNight, url }: typeof data) => {
+          const dateObj = new Date(date);
+          const formattedLine = `\n FightId: ${_id} \n MainFight: ${title} \n Date: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \n Time: ${time} \n EventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \n EventLink: ${url} \n`;
+          formattedResponse += formattedLine;
+        }));
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
@@ -41,13 +41,14 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
   let fightById = [];
 
   try {
-    fightById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${Number(fightId) - 1}`).then(({ data }) => data)).card;
+    fightById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${fightId}`).then(({ data }) => data)).fights;
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  fightById.forEach(({ redCornerName, blueCornerName }: IFightCard, index: number) => {
-    formattedResponse += `${index === 0 ? 'Main Fight: ' : ''}${redCornerName.length <= 1 ? 'TBA' : redCornerName} vs ${blueCornerName.length <= 1 ? 'TBA' : blueCornerName}\n`;
+  fightById.forEach(({ redCornerFighter, blueCornerFighter }: IFightCard, index: number) => {
+    formattedResponse += `${index === 0 ? 'Main Fight: ' : ''}${redCornerFighter.length <= 1 ? 'TBA' : redCornerFighter} vs ${blueCornerFighter.length <= 1 ? 'TBA' : blueCornerFighter}\n`;
+    formattedResponse += '\n';
   });
 
   bot.sendMessage(chatId, formattedResponse);
@@ -55,7 +56,7 @@ bot.onText(/^\/fightCard\/[0-9]$/gm, async (msg, match) => {
 
 bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Use the commands /fights or /fightCard/(FightId)');
+  bot.sendMessage(chatId, 'Use the commands /events or /fightCard/(FightId) (Example: /fightCard/1)');
 });
 
 api.listen(PORT, async () => {
