@@ -3,6 +3,7 @@ import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
 import { IEvents, IFightCard } from './interfaces';
+import { formatEventFightsResponse, formatEventsResponse } from './helpers';
 
 const api = express();
 api.disable('x-powered-by');
@@ -22,22 +23,17 @@ bot.onText(/^\/events$/gm, async (msg) => {
       bot.sendMessage(chatId, 'Wait a few more seconds...');
     }
   }, 5000);
-  let eventsArray = [] as IEvents[];
-  let formattedResponse = '';
-  formattedResponse += 'Next Events: \n';
+  let events = [] as IEvents[];
+  let formattedResponse = 'Next Events: \n';
 
   try {
-    eventsArray = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
+    events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
       .then(({ data }) => data);
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  eventsArray.forEach(({ _id, title, date, time, fightNight, url }) => {
-    const dateObj = new Date(date);
-    const formattedLine = `\nEventId: ${_id} \nMainFight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEventLink: ${url} \n`;
-    formattedResponse += formattedLine;
-  });
+  formattedResponse = formatEventsResponse(events);
 
   bot.sendMessage(chatId, formattedResponse);
   messageSent = true;
@@ -47,18 +43,15 @@ bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('/')[2];
   const chatId = msg.chat.id;
   let formattedResponse = '';
-  let fightById = [];
+  let eventById = [] as IFightCard[];
 
   try {
-    fightById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${eventId}`).then(({ data }) => data)).fights;
+    eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${eventId}`).then(({ data }) => data)).fights;
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  fightById.forEach(({ redCornerFighter, blueCornerFighter }: IFightCard, index: number) => {
-    formattedResponse += `${index === 0 ? 'Main Fight: ' : ''}${redCornerFighter.length <= 1 ? 'TBA' : redCornerFighter} vs ${blueCornerFighter.length <= 1 ? 'TBA' : blueCornerFighter}\n`;
-    formattedResponse += '\n';
-  });
+  formattedResponse = formatEventFightsResponse(eventById);
 
   bot.sendMessage(chatId, formattedResponse);
 });
