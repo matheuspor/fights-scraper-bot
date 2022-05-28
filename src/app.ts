@@ -2,7 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
-import { IFightCard } from './interfaces';
+import { IEvents, IFightCard } from './interfaces';
 
 const api = express();
 api.disable('x-powered-by');
@@ -14,24 +14,33 @@ const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 
-bot.onText(/^\/events$/gm, async (msg) => {
+bot.onText(/^\/events$/gm, async (msg) => {  
   const chatId = msg.chat.id;
+  let messageSent = false;
+  setTimeout(() => {
+    if (!messageSent) {
+      bot.sendMessage(chatId, 'Wait a few more seconds...');
+    }
+  }, 5000);
+  let eventsArray = [] as IEvents[];
   let formattedResponse = '';
   formattedResponse += 'Next Events: \n';
 
   try {
-    await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
-      .then(({ data }) => data
-        .forEach(({ _id, title, date, time, fightNight, url }: typeof data) => {
-          const dateObj = new Date(date);
-          const formattedLine = `\nEventId: ${_id} \nMainFight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEventLink: ${url} \n`;
-          formattedResponse += formattedLine;
-        }));
+    eventsArray = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
+      .then(({ data }) => data);
   } catch (err) {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
+  eventsArray.forEach(({ _id, title, date, time, fightNight, url }) => {
+    const dateObj = new Date(date);
+    const formattedLine = `\nEventId: ${_id} \nMainFight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEventLink: ${url} \n`;
+    formattedResponse += formattedLine;
+  });
+
   bot.sendMessage(chatId, formattedResponse);
+  messageSent = true;
 });
 
 bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
