@@ -33,7 +33,7 @@ bot.onText(/^\/events$/gm, async (msg) => {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  formattedResponse = formatEventsResponse(events);
+  formattedResponse += formatEventsResponse(events);
 
   bot.sendMessage(chatId, formattedResponse);
   messageSent = true;
