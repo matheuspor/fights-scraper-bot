@@ -22,7 +22,7 @@ bot.onText(/^\/events$/gm, async (msg) => {
     if (!messageSent) {
       bot.sendMessage(chatId, 'Wait a few more seconds...');
     }
-  }, 5000);
+  }, 10000);
   let events = [] as IEvents[];
   let formattedResponse = 'Next Events: \n';
 
@@ -47,7 +47,7 @@ bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
     if (!messageSent) {
       bot.sendMessage(chatId, 'Wait a few more seconds...');
     }
-  }, 5000);
+  }, 10000);
   let formattedResponse = '';
   let eventById = [] as IFightCard[];
 
