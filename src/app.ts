@@ -42,6 +42,12 @@ bot.onText(/^\/events$/gm, async (msg) => {
 bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('/')[2];
   const chatId = msg.chat.id;
+  let messageSent = false;
+  setTimeout(() => {
+    if (!messageSent) {
+      bot.sendMessage(chatId, 'Wait a few more seconds...');
+    }
+  }, 5000);
   let formattedResponse = '';
   let eventById = [] as IFightCard[];
 
@@ -54,6 +60,7 @@ bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
   formattedResponse = formatEventFightsResponse(eventById);
 
   bot.sendMessage(chatId, formattedResponse);
+  messageSent = true;
 });
 
 bot.onText(/.+/gm, (msg) => {
