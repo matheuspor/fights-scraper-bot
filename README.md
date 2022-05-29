@@ -2,7 +2,7 @@
   🥊MMA Fights Telegram Bot
 </h1>
 <h4 align="center"><a href="https://t.me/fightsScraper_bot">Message Bot :speech_balloon:</a></h4>
-<p align="center">🤼‍ Integrates with the <a href="https://github.com/matheuspor/mma-fights-scraper-api">MMA Fights Scraper Api</a> to receive API responses via chat commands</p>
+<p align="center">🤼‍ Integrates with the <a href="https://github.com/matheuspor/mma-fights-scraper-api">MMA Fights Scraper Api</a> to make API requests via chat commands</p>
 <div align="center">
   
   <a href="">![GitHub license](https://img.shields.io/github/license/matheuspor/mma-fights-telegram-bot)</a>
