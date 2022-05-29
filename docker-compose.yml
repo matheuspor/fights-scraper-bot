@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  bot:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - bot:/home/node/app
+    env_file:
+      - .env
+    ports:
+      - 3001:3001
+    working_dir: /
+volumes:
+  bot:
