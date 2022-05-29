@@ -1,5 +1,5 @@
 {
-  "name": "fights-scraper-bot",
+  "name": "mma-fights-telegram-bot",
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matheuspor/fightsScraper-bot.git"
+    "url": "git+https://github.com/matheuspor/mma-fights-telegram-bot.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/matheuspor/fightsScraper-bot/issues"
+    "url": "https://github.com/matheuspor/mma-fights-telegram-bot/issues"
   },
-  "homepage": "https://github.com/matheuspor/fightsScraper-bot#readme",
+  "homepage": "https://github.com/matheuspor/mma-fights-telegram-bot#readme",
   "dependencies": {
     "@types/node-telegram-bot-api": "^0.57.1",
     "@types/supertest": "2.0.11",
