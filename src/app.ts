@@ -1,15 +1,8 @@
-import express from 'express';
 import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
 import { IEvents, IFightCard } from './interfaces';
 import { formatEventFightsResponse, formatEventsResponse } from './helpers';
-
-const api = express();
-api.disable('x-powered-by');
-api.use(express.json());
-
-const PORT = process.env.PORT || 3001;
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
@@ -67,9 +60,3 @@ bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, 'Use the commands /events or /eventFights/(EventId) \nExample: /eventFights/1');
 });
-
-api.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-export default api;
