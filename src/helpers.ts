@@ -10,9 +10,9 @@ export const formatEventsResponse = (events: IEvents[]) => {
   return formattedResponse;
 };
 
-export const formatEventFightsResponse = (event: IFightCard[]) => {
+export const formatEventFightsResponse = (eventFights: IFightCard[]) => {
   let formattedResponse = '';
-  event.forEach(({ redCornerFighter, blueCornerFighter }: IFightCard, index: number) => {
+  eventFights.forEach(({ redCornerFighter, blueCornerFighter }: IFightCard, index: number) => {
     formattedResponse += `${index === 0 ? 'Main Fight: ' : ''}${redCornerFighter.length <= 1 ? 'TBA' : redCornerFighter} vs ${blueCornerFighter.length <= 1 ? 'TBA' : blueCornerFighter}\n`;
     formattedResponse += '\n';
   });
