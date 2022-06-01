@@ -32,8 +32,8 @@ bot.onText(/^\/events$/gm, async (msg) => {
   messageSent = true;
 });
 
-bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
-  const eventId = match && match[0].split('/')[2];
+bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
+  const eventId = match && match[0].split('eventFights')[1];
   const chatId = msg.chat.id;
   let messageSent = false;
   setTimeout(() => {
@@ -58,5 +58,5 @@ bot.onText(/^\/eventFights\/[0-9]$/gm, async (msg, match) => {
 
 bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Use the commands /events or /eventFights/(EventId) \nExample: /eventFights/1');
+  bot.sendMessage(chatId, 'Available commands: \n\n/events - Get next events schedule \n/eventFights(eventId) - Get list of fights by eventId(Ex: /eventFights1)');
 });
