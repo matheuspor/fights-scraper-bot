@@ -4,7 +4,7 @@ export const formatEventsResponse = (events: IEvents[]) => {
   let formattedResponse = '';
   events.forEach(({ _id, title, date, time, fightNight }) => {
     const dateObj = new Date(date);
-    const formattedLine = `\nEventId: ${_id} \nMain Fight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \formatEventsResponse: /eventFights${_id} \n`;
+    const formattedLine = `\nEventId: ${_id} \nMain Fight: ${title} \nDate: ${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEvent Fights: /eventFights${_id} \n`;
     formattedResponse += formattedLine;
   });
   return formattedResponse;
