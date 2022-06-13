@@ -4,7 +4,7 @@ export interface IFightCard {
 }
 
 export interface IEvents {
-  _id: string,
+  _id: number,
   title: string,
   date: string,
   time: string,
