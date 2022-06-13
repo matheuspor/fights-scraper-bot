@@ -10,8 +10,8 @@
   "scripts": {
     "start": "ts-node ./src/app.ts",
     "dev": "ts-node-dev ./src/app.ts",
-    "test": "mocha -r ts-node/register \"src/__tests__/**/*.test.ts\" --exit -t 60000 ",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "mocha -r ts-node/register \"src/__tests__/**/*.test.ts\" --exit -t 60000 ",
     "test:coverage": "nyc npm test"
   },
   "repository": {
