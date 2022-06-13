@@ -1,6 +1,6 @@
 import { IEvents, IFightCard } from './interfaces';
 
-export const formatEventsResponse = (events: IEvents[]) => {
+export const formatEvents = (events: IEvents[]) => {
   let formattedResponse = '';
   events.forEach(({ _id, title, date, time, fightNight }) => {
     const dateObj = new Date(date);
@@ -14,7 +14,7 @@ export const formatEventsResponse = (events: IEvents[]) => {
   return formattedResponse;
 };
 
-export const formatEventFightsResponse = (eventFights: IFightCard[]) => {
+export const formatEventFights = (eventFights: IFightCard[]) => {
   let formattedResponse = '';
   eventFights.forEach(({ redCornerFighter, blueCornerFighter }: IFightCard, index: number) => {
     formattedResponse += `${index === 0 ? 'Main Fight: ' : ''}${redCornerFighter.length <= 1 ? 'TBA' : redCornerFighter} vs ${blueCornerFighter.length <= 1 ? 'TBA' : blueCornerFighter}\n\n`;

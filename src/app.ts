@@ -2,7 +2,7 @@ import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
 import { IEvents, IFightCard } from './interfaces';
-import { formatEventFightsResponse, formatEventsResponse } from './helpers';
+import { formatEventFights, formatEvents } from './helpers';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
@@ -26,7 +26,7 @@ bot.onText(/^\/events$/gm, async (msg) => {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  formattedResponse += formatEventsResponse(events);
+  formattedResponse += formatEvents(events);
 
   bot.sendMessage(chatId, formattedResponse);
   messageSent = true;
@@ -50,7 +50,7 @@ bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
     return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
 
-  formattedResponse = formatEventFightsResponse(eventById);
+  formattedResponse = formatEventFights(eventById);
 
   bot.sendMessage(chatId, formattedResponse);
   messageSent = true;

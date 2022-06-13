@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { formatEventsResponse, formatEventFightsResponse } from '../helpers';
+import { formatEvents, formatEventFights } from '../helpers';
 
 describe('Tests helper functions', () => {
   const eventsMock = [
@@ -20,18 +20,18 @@ describe('Tests helper functions', () => {
     { redCornerFighter: 'Liang Na', blueCornerFighter: 'Silvana Gomez Juarez' }, 
     { redCornerFighter: 'Ramona Pascual', blueCornerFighter: 'Joselyne Edwards' }];
     
-  describe('Tests formatEventsResponse', () => {
+  describe('Tests formatEvents', () => {
     const expectedResponse = '\nEventId: 1 \nMain Fight: Teixeira vs Prochazka \nDate: 11-06-2022 \nTime: 22:00 EDT \nEventType: UFC \nEvent Fights: /eventFights1 \n\nEventId: 2 \nMain Fight: Kattar vs Emmett \nDate: 18-06-2022 \nTime: 19:00 EDT \nEventType: UFC-FightNight \nEvent Fights: /eventFights2 \n\nEventId: 3 \nMain Fight: Tsarukyan vs Gamrot \nDate: 25-06-2022 \nTime: 18:00 EDT \nEventType: UFC-FightNight \nEvent Fights: /eventFights3 \n\nEventId: 4 \nMain Fight: Adesanya vs Cannonier \nDate: 02-07-2022 \nTime: 22:00 EDT \nEventType: UFC \nEvent Fights: /eventFights4 \n';
     it('Returns formatted string', () => {
-      const response = formatEventsResponse(eventsMock);
+      const response = formatEvents(eventsMock);
       expect(response).to.equal(expectedResponse);
     });
   });
-  describe('Tests formatEventFightsResponse', () => {
+  describe('Tests formatEventFights', () => {
     const expectedResponse = 'Main Fight: Glover Teixeira vs Jiří Procházka\n\nValentina Shevchenko vs Taila Santos\n\nZhang Weili vs Joanna Jedrzejczyk\n\nAndre Fialho vs Jake Matthews\n\nJack Della Maddalena vs Ramazan Emeev\n\nSeungwoo Choi vs Josh Culibao\n\nMaheshate vs Steve Garcia\n\nBrendan Allen vs Jacob Malkoun\n\nKyung Ho Kang vs Batgerel Danaa\n\nLiang Na vs Silvana Gomez Juarez\n\nRamona Pascual vs Joselyne Edwards\n\n';
 
     it('Returns formatted string', () => {
-      const response = formatEventFightsResponse(eventFightsMock);
+      const response = formatEventFights(eventFightsMock);
       expect(response).to.equal(expectedResponse);
     });
   });
