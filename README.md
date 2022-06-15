@@ -6,7 +6,7 @@
 
 <div align="center">  
   
-  <a href="">![GitHub workflow status](https://img.shields.io/github/checks-status/matheuspor/mma-fights-telegram-bot/main)</a>
+  <a href="">![GitHub workflow status](https://img.shields.io/github/workflow/status/matheuspor/mma-fights-telegram-bot/Node.js%20Tests/main)</a>
   <a href="">![GitHub license](https://img.shields.io/github/license/matheuspor/mma-fights-telegram-bot)</a>
   <a href="">![Repo top language](https://img.shields.io/github/languages/top/matheuspor/mma-fights-telegram-bot)</a>  
   
