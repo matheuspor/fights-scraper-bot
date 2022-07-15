@@ -8,7 +8,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 
-bot.onText(/^\/events$/gm, async (msg) => {  
+bot.onText(/^\/events$/gm, async (msg) => {
   const chatId = msg.chat.id;
   let messageSent = false;
   setTimeout(() => {
@@ -23,7 +23,8 @@ bot.onText(/^\/events$/gm, async (msg) => {
     events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
       .then(({ data }) => data);
   } catch (err) {
-    return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
+    bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
+    messageSent = true;
   }
 
   formattedResponse += formatEvents(events);
@@ -47,7 +48,8 @@ bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
   try {
     eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${eventId}`).then(({ data }) => data)).fights;
   } catch (err) {
-    return bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
+    bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
+    messageSent = true;
   }
 
   formattedResponse = formatEventFights(eventById);
