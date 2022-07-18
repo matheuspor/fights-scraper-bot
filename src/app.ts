@@ -46,7 +46,7 @@ bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
   let eventById = [] as IFightCard[];
 
   try {
-    eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/fights-card/${eventId}`).then(({ data }) => data)).fights;
+    eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/event-card/${eventId}`).then(({ data }) => data)).fights;
   } catch (err) {
     bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
     messageSent = true;
@@ -60,5 +60,5 @@ bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
 
 bot.onText(/.+/gm, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Available commands: \n\n/events - Get next events schedule \n/eventFights(eventId) - Get list of fights by eventId(Ex: /eventFights1)');
+  bot.sendMessage(chatId, 'Available commands: \n\n/events - Get list of upcoming events \n/eventFights(id) - Get list of fights by event(Ex: /eventFights1)');
 });

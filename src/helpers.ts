@@ -8,7 +8,7 @@ export const formatEvents = (events: IEvents[]) => {
       minimumIntegerDigits: 2,
       useGrouping: false,
     });
-    const formattedLine = `\nEventId: ${_id} \nMain Fight: ${title} \nDate: ${dateToString(dateObj.getDate())}-${dateToString(dateObj.getMonth() + 1)}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEvent Fights: /eventFights${_id} \n`;
+    const formattedLine = `\nid: ${_id} \nMain Fight: ${title} \nDate: ${dateToString(dateObj.getDate())}-${dateToString(dateObj.getMonth() + 1)}-${dateObj.getFullYear()} \nTime: ${time} \nEventType: ${fightNight ? 'UFC-FightNight' : 'UFC'} \nEvent Fights: /eventFights${_id} \n`;
     formattedResponse += formattedLine;
   });
   return formattedResponse;
