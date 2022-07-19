@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
-import { IEvents, IFightCard } from './interfaces';
 import { formatEventFights, formatEvents } from './helpers';
 import AwaitAndRespond from './AwaitAndRespond';
 
@@ -12,12 +11,12 @@ const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 bot.onText(/^\/events$/gm, async (msg) => {
   const chatId = msg.chat.id;
   const responseHandler = new AwaitAndRespond(bot, chatId);
-  let events = [] as IEvents[];
+  // let events = [] as IEvents[];
 
   try {
-    events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
+    const events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
       .then(({ data }) => data);
-    await bot.sendMessage(chatId, `Next events: \n${formatEvents(events)}`);
+    await bot.sendMessage(chatId, formatEvents(events));
   } catch (err) {
     await bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
@@ -28,11 +27,10 @@ bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('eventFights')[1];
   const chatId = msg.chat.id;
   const responseHandler = new AwaitAndRespond(bot, chatId);
-  let eventById = [] as IFightCard[];
 
   try {
-    eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/event-card/${eventId}`).then(({ data }) => data)).fights;
-    await bot.sendMessage(chatId, formatEventFights(eventById));
+    const event = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/event-card/${eventId}`).then(({ data }) => data)).fights;
+    await bot.sendMessage(chatId, formatEventFights(event));
   } catch (err) {
     await bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
