@@ -11,7 +11,6 @@ const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 bot.onText(/^\/events$/gm, async (msg) => {
   const chatId = msg.chat.id;
   const responseHandler = new AwaitAndRespond(bot, chatId);
-  // let events = [] as IEvents[];
 
   try {
     const events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
