@@ -31,7 +31,7 @@ describe('Tests helper functions', () => {
     const expectedResponse = 'Main Fight: Glover Teixeira vs Jiří Procházka\n\nValentina Shevchenko vs Taila Santos\n\nZhang Weili vs Joanna Jedrzejczyk\n\nAndre Fialho vs Jake Matthews\n\nJack Della Maddalena vs Ramazan Emeev\n\nSeungwoo Choi vs Josh Culibao\n\nMaheshate vs Steve Garcia\n\nBrendan Allen vs Jacob Malkoun\n\nKyung Ho Kang vs Batgerel Danaa\n\nLiang Na vs Silvana Gomez Juarez\n\nRamona Pascual vs Joselyne Edwards\n\n';
 
     it('Returns formatted string', () => {
-      const response = formatEventFights(eventFightsMock);
+      const response = formatEventFights({ _id: 1, fights: eventFightsMock });
       expect(response).to.equal(expectedResponse);
     });
   });

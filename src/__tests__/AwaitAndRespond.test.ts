@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import Sinon from 'sinon';
-import AwaitAndRespond from '../AwaitAndRespond';
+import AwaitAndRespondUser from '../AwaitAndRespondUser';
 
 describe('Tests AwaitAndRespond class', () => {
   beforeEach(() => {
@@ -10,9 +10,9 @@ describe('Tests AwaitAndRespond class', () => {
 
   it('Tests constructor', () => {
     const bot = Sinon.stub() as any;
-    const awaitApiMethodStub = Sinon.stub(AwaitAndRespond.prototype, <any>'awaitApi');
+    const awaitApiMethodStub = Sinon.stub(AwaitAndRespondUser.prototype, <any>'awaitApi');
     const chatId = 1;
-    const awaitAndRespond = new AwaitAndRespond(bot, chatId);
+    const awaitAndRespond = new AwaitAndRespondUser(bot, chatId);
     expect(awaitAndRespond.messageSent).to.be.equal(false);
     Sinon.assert.calledOnce(awaitApiMethodStub);
   });
@@ -24,7 +24,7 @@ describe('Tests AwaitAndRespond class', () => {
         sendMessage: sendMessageStub,
       }) as any;
       const chatId = 1;
-      (() => new AwaitAndRespond(bot, chatId))();
+      (() => new AwaitAndRespondUser(bot, chatId))();
       setTimeout(() => {
         Sinon.assert.calledOnceWithExactly(sendMessageStub, chatId, 'A few more seconds...');
       }, 6000);
@@ -35,7 +35,7 @@ describe('Tests AwaitAndRespond class', () => {
         sendMessage: sendMessageStub,
       }) as any;
       const chatId = 1;
-      const responseHandler = new AwaitAndRespond(bot, chatId);
+      const responseHandler = new AwaitAndRespondUser(bot, chatId);
       responseHandler.messageSent = true;
       setTimeout(() => {
         Sinon.assert.notCalled(sendMessageStub);
