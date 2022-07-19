@@ -3,6 +3,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
 import { IEvents, IFightCard } from './interfaces';
 import { formatEventFights, formatEvents } from './helpers';
+import AwaitAndRespond from './AwaitAndRespond';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
@@ -10,52 +11,32 @@ const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 
 bot.onText(/^\/events$/gm, async (msg) => {
   const chatId = msg.chat.id;
-  let messageSent = false;
-  setTimeout(() => {
-    if (!messageSent) {
-      bot.sendMessage(chatId, 'Wait a few more seconds...');
-    }
-  }, 8000);
+  const responseHandler = new AwaitAndRespond(bot, chatId);
   let events = [] as IEvents[];
-  let formattedResponse = 'Next Events: \n';
 
   try {
     events = await axios.get('https://mma-fights-scraper-api.herokuapp.com/api/events')
       .then(({ data }) => data);
+    await bot.sendMessage(chatId, `Next events: \n${formatEvents(events)}`);
   } catch (err) {
-    bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
-    messageSent = true;
+    await bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
-
-  formattedResponse += formatEvents(events);
-
-  bot.sendMessage(chatId, formattedResponse);
-  messageSent = true;
+  responseHandler.messageSent = true;
 });
 
 bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('eventFights')[1];
   const chatId = msg.chat.id;
-  let messageSent = false;
-  setTimeout(() => {
-    if (!messageSent) {
-      bot.sendMessage(chatId, 'Wait a few more seconds...');
-    }
-  }, 8000);
-  let formattedResponse = '';
+  const responseHandler = new AwaitAndRespond(bot, chatId);
   let eventById = [] as IFightCard[];
 
   try {
     eventById = (await axios.get(`https://mma-fights-scraper-api.herokuapp.com/api/event-card/${eventId}`).then(({ data }) => data)).fights;
+    await bot.sendMessage(chatId, formatEventFights(eventById));
   } catch (err) {
-    bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
-    messageSent = true;
+    await bot.sendMessage(chatId, 'Something went wrong, try again in a few minutes');
   }
-
-  formattedResponse = formatEventFights(eventById);
-
-  bot.sendMessage(chatId, formattedResponse);
-  messageSent = true;
+  responseHandler.messageSent = true;
 });
 
 bot.onText(/.+/gm, (msg) => {
