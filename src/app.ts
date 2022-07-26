@@ -11,17 +11,16 @@ const bot = new TelegramBot(BOT_TOKEN, { polling: true, onlyFirstMatch: true });
 bot.onText(/^\/events$/gm, async (msg) => {
   const apiUrl = 'https://mma-fights-scraper-api.herokuapp.com/api/events';
   const chatId = msg.chat.id;
-  const responseHandler = new AwaitAndRespondUser(bot, chatId);
-  await responseHandler.respondUser<IEvents[]>(formatEvents, apiUrl);
+  const responseHandler = new AwaitAndRespondUser<IEvents[]>(bot, chatId);
+  await responseHandler.respondUser(formatEvents, apiUrl);
 });
 
 bot.onText(/^\/eventFights[0-9]$/gm, async (msg, match) => {
   const eventId = match && match[0].split('eventFights')[1];
   const apiUrl = `https://mma-fights-scraper-api.herokuapp.com/api/event-card/${eventId}`;
-  type ApiResponse = { _id: number, fights: IFightCard[] };
   const chatId = msg.chat.id;
-  const responseHandler = new AwaitAndRespondUser(bot, chatId);
-  await responseHandler.respondUser<ApiResponse>(formatEventFights, apiUrl);
+  const responseHandler = new AwaitAndRespondUser<IFightCard>(bot, chatId);
+  await responseHandler.respondUser(formatEventFights, apiUrl);
 });
 
 bot.onText(/.+/gm, (msg) => {

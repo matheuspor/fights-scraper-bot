@@ -1,7 +1,7 @@
 import axios from 'axios';
 import TelegramBot from 'node-telegram-bot-api';
 
-export default class AwaitAndRespondUser {
+export default class AwaitAndRespondUser<Type> {
   public messageSent: boolean;
 
   private bot: TelegramBot;
@@ -26,14 +26,13 @@ export default class AwaitAndRespondUser {
     }, 5000);
   }
 
-  public async respondUser<Type>(
+  public async respondUser(
     formatFunction: (data: Type) => string,
     apiUrl: string,
   ) {
     try {
-      const apiResponse = await axios.get(apiUrl)
-        .then(({ data }) => data);
-      await this.bot.sendMessage(this.chatId, formatFunction(apiResponse));
+      await axios.get(apiUrl)
+        .then(({ data }) => this.bot.sendMessage(this.chatId, formatFunction(data)));
     } catch (err) {
       await this.bot.sendMessage(this.chatId, 'Something went wrong, try again in a few minutes');
     }

@@ -9,6 +9,8 @@
   },
   "scripts": {
     "start": "ts-node ./src/app.ts",
+    "compose:up": "docker-compose up --build -d",
+    "compose:down": "docker-compose down",
     "dev": "ts-node-dev ./src/app.ts",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "mocha -r ts-node/register \"src/__tests__/**/*.test.ts\" --exit -t 60000 ",

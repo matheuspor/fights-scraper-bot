@@ -1,6 +1,11 @@
-export interface IFightCard {
+interface IFights {
   redCornerFighter: string,
   blueCornerFighter: string,
+}
+
+export interface IFightCard {
+  _id: number,
+  fights: IFights[],
 }
 
 export interface IEvents {
@@ -8,6 +13,6 @@ export interface IEvents {
   title: string,
   date: string,
   time: string,
-  fightNight: boolean,
+  event: string,
   url: string,
 }
