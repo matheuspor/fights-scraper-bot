@@ -21,7 +21,7 @@ describe('Tests helper functions', () => {
     { redCornerFighter: 'Ramona Pascual', blueCornerFighter: 'Joselyne Edwards' }];
 
   describe('Tests formatEvents', () => {
-    const expectedResponse = 'Next events: \n\nid: 1 \nMain Fight: Teixeira vs Prochazka \nDate: 11-06-2022 \nTime: 22:00 EDT \nEvent: UFC-270 \nEvent Fights: /eventFights1 \n\nid: 2 \nMain Fight: Kattar vs Emmett \nDate: 18-06-2022 \nTime: 19:00 EDT \nEvent: UFC-FightNight \nEvent Fights: /eventFights2 \n\nid: 3 \nMain Fight: Tsarukyan vs Gamrot \nDate: 25-06-2022 \nTime: 18:00 EDT \nEvent: UFC-FightNight \nEvent Fights: /eventFights3 \n\nid: 4 \nMain Fight: Adesanya vs Cannonier \nDate: 02-07-2022 \nTime: 22:00 EDT \nEvent: UFC-271 \nEvent Fights: /eventFights4 \n';
+    const expectedResponse = 'Next events: \n\nid: 1 \nMain Fight: Teixeira vs Prochazka \nDate: 10-06-2022 \nTime: 22:00 EDT \nEvent: UFC-270 \nEvent Fights: /eventFights1 \n\nid: 2 \nMain Fight: Kattar vs Emmett \nDate: 17-06-2022 \nTime: 19:00 EDT \nEvent: UFC-FightNight \nEvent Fights: /eventFights2 \n\nid: 3 \nMain Fight: Tsarukyan vs Gamrot \nDate: 24-06-2022 \nTime: 18:00 EDT \nEvent: UFC-FightNight \nEvent Fights: /eventFights3 \n\nid: 4 \nMain Fight: Adesanya vs Cannonier \nDate: 01-07-2022 \nTime: 22:00 EDT \nEvent: UFC-271 \nEvent Fights: /eventFights4 \n';
     it('Returns formatted string', () => {
       const response = formatEvents(eventsMock);
       expect(response).to.equal(expectedResponse);
